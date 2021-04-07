@@ -19,7 +19,7 @@ CLOCK_Configure();
 //** Placez votre code là ** //
 // clock 72MHz ==> T = 0.0138µs
 // Pour 100ms il faut 7246376.8 tick
-Timer_1234_Init_ff(TIM4,7246377);
+Timer_1234_Init_ff(TIM4,72*100000);
 	
 	
 // Activation des interruptions issues du Timer 4
@@ -43,7 +43,7 @@ GPIO_Configure(GPIOB, 1, OUTPUT, OUTPUT_PPULL);
 	
 while	(1)
 	{
-		timer_callback();
+		
 	}
 }
 

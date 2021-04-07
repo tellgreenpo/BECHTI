@@ -59,7 +59,8 @@ timer_callback proc
 		STR R0,[R1]
 		;GPIOB_Set(1);
 		MOV R0,#1
-
+		; attention pour R0 a R3 qui peuvent etre cramer
+		; Push ces registres
 		bl GPIOB_Set;
 
 		
@@ -70,9 +71,9 @@ els
 		MOV R0,#1
 		STR R0,[R1]
 		;GPIOB_Set(0)
-		MOV R0,#0
+		MOV R0,#1
 
-		bl GPIOB_Set
+		bl GPIOB_Clear;
 
 finsi
 		
