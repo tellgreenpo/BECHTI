@@ -31,11 +31,10 @@ Index DCD 0 ;32bit
 
 
 CallBackSon proc
-	PUSH {R4,R5}
 	LDR R0,=Son
 	LDR R1,=Index
 	LDR R2,=LongueurSon
-	LDR R5,=SortieSon
+	LDR R4,=SortieSon
 	LDR R3,[R1]
 	;if(index<5512) then
 	CMP R3,R2
@@ -53,10 +52,9 @@ els
 		; SortieSon = sonBrut /  92 ! attention conversion
 		MOV R3,#92
 		UDIV R2,R3
-		STRH R2,[R5]
+		STRH R2,[R4]
 		
 	;else do nothing
-	POP{R5,R4}
 	bx lr
 	endp
 	
