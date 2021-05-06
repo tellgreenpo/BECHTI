@@ -17,8 +17,6 @@ CLOCK_Configure();
 // configuration du Timer 4 en débordement 100ms
 	
 //** Placez votre code là ** //
-// clock 72MHz ==> T = 0.0138µs
-// Pour 100ms il faut 7246376.8 tick
 Timer_1234_Init_ff(TIM4,72*100000);
 	
 	

@@ -24,6 +24,8 @@ Index DCD 0 ;32bit
 
 	EXPORT CallBackSon
 		
+	INCLUDE ./Driver/DriverJeuLaser.inc
+		
 ;Section ROM code (read only) :		
 	area    moncode,code,readonly
 ; écrire le code ici		
@@ -31,31 +33,34 @@ Index DCD 0 ;32bit
 
 
 CallBackSon proc
-	LDR R0,=Son
+	LDR R2,=Son
 	LDR R1,=Index
-	LDR R2,=LongueurSon
+	LDR R0,=LongueurSon
 	LDR R4,=SortieSon
 	LDR R3,[R1]
 	;if(index<5512) then
-	CMP R3,R2
+	CMP R3,R0
 	BNE els
 els
 		;sonBrut = Son[index];
 		; 16 bit
-		LDRSH R2,[R0,R3,LSL #1]
+		PUSH{LR}
+		LDRSH R0,[R2,R3,LSL #1]
 		; index++;
 		ADD R3,#1
 		STR R3,[R1]
 		;SortieSon = mise_a_echelle(sonBrut)
 		; sonBrut += 32768
-		ADD R2,#32768
+		ADD R0,#32768
 		; SortieSon = sonBrut /  92 ! attention conversion
 		MOV R3,#92
-		UDIV R2,R3
-		STRH R2,[R4]
+		UDIV R0,R3
+		STRH R0,[R4]
 		
-	;else do nothing
-	bx lr
+		bl PWM_Set_Value_TIM3_Ch3
+		POP{PC}
+		
+	;bx lr
 	endp
 	
 		
