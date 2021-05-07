@@ -34,21 +34,21 @@ Index DCD 0 ;32bit
 
 
 CallBackSon proc
-	PUSH{LR,R4,R5}
-	LDR R2,=Son
+	PUSH{LR,R4}
 	LDR R1,=Index
 	LDR R0,=LongueurSon
-	LDR R4,=SortieSon
 	LDR R3,[R1]
-	LDR R5,[R0]
+	LDR R2,[R0]
 	;if(index<5512) then
-	CMP R3,R5
+	CMP R3,R2
 	BHS finsi
 
 ; inferieur
 els
 		;sonBrut = Son[index];
 		; 16 bit
+		LDR R2,=Son
+		LDR R4,=SortieSon
 		LDRSH R0,[R2,R3,LSL #1]
 		; index++;
 		ADD R3,#1
@@ -63,7 +63,7 @@ els
 		bl PWM_Set_Value_TIM3_Ch3
 		
 finsi ;superieur
-	POP {PC,R4,R5}
+	POP {PC,R4}
 
 
 	endp
