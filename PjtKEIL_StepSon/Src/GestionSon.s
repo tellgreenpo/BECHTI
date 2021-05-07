@@ -41,7 +41,7 @@ CallBackSon proc
 	LDR R2,[R0]
 	;if(index<5512) then
 	CMP R3,R2
-	BHS finsi
+	BHS then
 
 ; inferieur
 els
@@ -61,6 +61,10 @@ els
 		UDIV R0,R3
 		STRH R0,[R4]
 		bl PWM_Set_Value_TIM3_Ch3
+		B finsi
+		
+then
+	bl StartSon
 		
 finsi ;superieur
 	POP {PC,R4}
