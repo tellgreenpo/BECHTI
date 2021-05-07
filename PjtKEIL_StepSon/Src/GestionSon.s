@@ -23,6 +23,7 @@ Index DCD 0 ;32bit
 	
 
 	EXPORT CallBackSon
+	EXPORT StartSon
 		
 	INCLUDE ./Driver/DriverJeuLaser.inc
 		
@@ -33,18 +34,21 @@ Index DCD 0 ;32bit
 
 
 CallBackSon proc
+	PUSH{LR,R4,R5}
 	LDR R2,=Son
 	LDR R1,=Index
 	LDR R0,=LongueurSon
 	LDR R4,=SortieSon
 	LDR R3,[R1]
+	LDR R5,[R0]
 	;if(index<5512) then
-	CMP R3,R0
-	BNE els
+	CMP R3,R5
+	BHS finsi
+
+; inferieur
 els
 		;sonBrut = Son[index];
 		; 16 bit
-		PUSH{LR}
 		LDRSH R0,[R2,R3,LSL #1]
 		; index++;
 		ADD R3,#1
@@ -56,12 +60,19 @@ els
 		MOV R3,#92
 		UDIV R0,R3
 		STRH R0,[R4]
-		
 		bl PWM_Set_Value_TIM3_Ch3
-		POP{PC}
 		
-	;bx lr
+finsi ;superieur
+	POP {PC,R4,R5}
+
+
 	endp
-	
+		
+StartSon proc
+	LDR R0,=Index
+	MOV R1,#0
+	STR R1,[R0]
+	bx lr
+	endp
 		
 	END	
