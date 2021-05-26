@@ -9,7 +9,6 @@
 
 ;Section RAM (read write):
 	area    maram,data,readwrite
-Index DCW 0;
 
 	
 ; ===============================================================================================
@@ -21,45 +20,54 @@ Index DCW 0;
 	area    moncode,code,readonly
 ; écrire le code ici		
 DFT_ModuleAuCarre proc
-	PUSH {R4,R5,R6,R7,R8}
+	PUSH {R4-R11}
 	LDR R2,=TabCos
-	LDR R3,=Index
+	LDR R10,=TabSin
 	MOV R7,#0
-Boucle	
-	;
-	LDR R4,[R3]
+	MOV R11,#0
+	mov R4,#0
+Boucle
 	; if (Index<64)
 	CMP R4,#64
 	BHS finsi
 	
 ;inferieur
-els
 	; R6 = n
 	MOV R6,R4
 	; k*n%64
 	MUL R6,R1
 	AND R6,#0x3F ; modulo
-	
-	; Recup Valeur TabCos
-	LDRSH R5,[R2,R6,LSL #1]
 	; Recup Valeur Tab Sgnal
 	LDRSH R8,[R0,R4,LSL #1]
+	; Recup Valeur TabCos
+	LDRSH R5,[R2,R6,LSL #1]
+	; Recup Vleur TabSin
+	LDRSH R9,[R10,R6,LSL #1]
 	; Multiplication
-	MUL R8,R5
+	MUL R5,R8 ;Re
+	MUL R9,R8 ;Im
 	; Somme et store
-	ADD R7,R8
+	ADD R11,R9 ;Im
+	ADD R7,R5 ;Re
 	; pour la boucle
 	;Index++
-	ADD R4,#1 ;n
-	STR R4,[R3]
+	ADD R4,#1
 	B Boucle
 ;superieur
 finsi
-	MOV R0,R7
+	; mise au carre
+	MOV R0,#0
+	MOV R1,#0
+	SMULL R1,R0,R7,R7
+	; Somme de Im et Re au carre
+	;ADD R0,R11
+	
+	SMLAL R1,R0,R11,R11
 	
 
 	
-	POP {R4,R5,R6,R7,R8}
+	POP {R4-R11}
+	bx lr 
 	endp
 
 

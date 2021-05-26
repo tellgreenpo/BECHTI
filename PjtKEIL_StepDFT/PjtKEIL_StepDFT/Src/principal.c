@@ -4,6 +4,7 @@
 
 extern int DFT_ModuleAuCarre(short int * Signal64ech, char k);
 extern short int LeSignal[];
+int tab[64];
 
 int main(void)
 {
@@ -19,8 +20,10 @@ CLOCK_Configure();
 
 //============================================================================	
 	
-	
-	int test = DFT_ModuleAuCarre(LeSignal,1);
+int i;
+for (i=0;i<64;i++){
+	tab[i] = DFT_ModuleAuCarre(LeSignal,i);
+}
 	
 while	(1)
 	{
